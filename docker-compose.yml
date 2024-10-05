@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  streamlit-app:
+    build: .
+    container_name: streamlit-app
+    ports:
+      - "8501:8501"
+    volumes:
+      - .:/app  # Mount current directory to app directory in the container
+    depends_on:
+      - postgres  # Optional: If you're using a database
+    networks:
+      - app-network
+
+  postgres:
+    image: postgres:15
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: my_password
+      POSTGRES_DB: lifetime_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+
+volumes:
+  postgres_data:
