@@ -12,6 +12,24 @@ import altair as alt
 import matplotlib.pyplot as plt
 
 @st.cache_data
+
+def load_and_preprocess_data(uploaded_file):
+    try:
+        sales_data = pd.read_csv(uploaded_file)
+        sales_data['date'] = pd.to_datetime(sales_data['date'])
+        return sales_data
+    except Exception as e:
+        st.error(f"Error loading data: {e}")
+        return None
+
+def generate_sample_data():
+    sample_data = pd.DataFrame({
+        'customer_id': np.random.randint(1, 101, 1000),
+        'date': pd.date_range(start='2022-01-01', periods=1000, freq='D')
+            .to_series().sample(1000, replace=True).values
+    })
+    return sample_data
+
 def load_and_preprocess_data(file):
     try:
         sales_data = pd.read_csv(file)
@@ -92,6 +110,19 @@ def load_model_params(params_dict):
 def main():
     st.title("Customer Lifetime Value Prediction with BG/NBD Model")
     
+     # Add a button for downloading a sample CSV file
+    if st.button('Download Sample Data'):
+        sample_data = generate_sample_data()
+        buffer = io.BytesIO()
+        sample_data.to_csv(buffer, index=False)
+        buffer.seek(0)
+        st.download_button(
+            label="Download Sample CSV",
+            data=buffer,
+            file_name="sample_sales_data.csv",
+            mime="text/csv"
+        )
+
     uploaded_file = st.file_uploader("Upload your sales history dataset (CSV)- Please note required columns 'customer_id' and 'date' ", type=["csv"])
     
     if uploaded_file is not None:
@@ -107,7 +138,7 @@ def main():
             st.write("Transformed Data Preview:")
             st.write(summary.head())
             
-            penalizer_coef = st.slider("Penalizer Coefficient", 0.0, 1.0, 0.0, 0.01)
+            penalizer_coef = st.slider("Penalizer Coefficient", 0.0, 1.0, 0.01, 0.01)
             bgf = train_model(summary, penalizer_coef)
             
             st.success("BG/NBD model trained successfully!")
