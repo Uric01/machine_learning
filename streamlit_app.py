@@ -111,13 +111,13 @@ def main():
     st.title("Customer Lifetime Value Prediction with BG/NBD Model")
     
      # Add a button for downloading a sample CSV file
-    if st.button('Download Sample Data'):
+    if st.button('Generate Sample Data To Download'):
         sample_data = generate_sample_data()
         buffer = io.BytesIO()
         sample_data.to_csv(buffer, index=False)
         buffer.seek(0)
         st.download_button(
-            label="Download Sample CSV",
+            label="Download The Sample CSV File",
             data=buffer,
             file_name="sample_sales_data.csv",
             mime="text/csv"
