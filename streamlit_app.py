@@ -117,7 +117,7 @@ def main():
         sample_data.to_csv(buffer, index=False)
         buffer.seek(0)
         st.download_button(
-            label="Download The Sample CSV File",
+            label="Download The Sample Data",
             data=buffer,
             file_name="sample_sales_data.csv",
             mime="text/csv"
