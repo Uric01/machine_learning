@@ -122,7 +122,7 @@ def main():
             file_name="sample_sales_data.csv",
             mime="text/csv"
         )
-st.write("Or")
+        
     uploaded_file = st.file_uploader("Upload your sales history dataset (CSV)- Please note required columns 'customer_id' and 'date' ", type=["csv"])
     
     if uploaded_file is not None:
