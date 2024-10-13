@@ -149,7 +149,7 @@ def main():
                 summary['predicted_transactions'] = make_predictions(bgf, summary, time_period)
             
             st.write("Predictions:")
-            st.write(summary[['customer_id','frequency', 'recency', 'T', 'predicted_transactions']])
+            st.write(summary[['frequency', 'recency', 'T', 'predicted_transactions']])
             
             st.subheader("Model Visualizations")
             plot_frequency_recency_heatmap(bgf, summary)
