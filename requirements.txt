@@ -4,3 +4,4 @@ numpy
 lifetimes
 matplotlib
 altair
+huggingface_hub
