@@ -79,5 +79,5 @@ The uploaded CSV file must include the following columns:
 
 ## 📄 License
 
-MIT License — use, modify, and share freely.
+MIT License. use, modify, and share freely.
 
