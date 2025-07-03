@@ -77,6 +77,10 @@ The uploaded CSV file must include the following columns:
 
 ---
 
+## 📸 Screenshot
+
+![CLV App Screenshot](clv.png)
+
 ## 📄 License
 
 MIT License. use, modify, and share freely.
