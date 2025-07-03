@@ -30,6 +30,7 @@ def generate_sample_data():
     })
     return sample_data
 
+#checks the dataset is of the correct format
 def load_and_preprocess_data(file):
     try:
         sales_data = pd.read_csv(file)
@@ -47,12 +48,13 @@ def load_and_preprocess_data(file):
         st.error(f"Error loading data: {str(e)}")
         return None
 
+#training of the data happens here
 def train_model(summary, penalizer_coef):
     with st.spinner("Training BG/NBD model..."):
         bgf = BetaGeoFitter(penalizer_coef=penalizer_coef)
         bgf.fit(summary['frequency'], summary['recency'], summary['T'])
     return bgf
-
+#generates predictions
 def make_predictions(bgf, summary, time_period):
     return bgf.conditional_expected_number_of_purchases_up_to_time(
         time_period,
@@ -60,7 +62,7 @@ def make_predictions(bgf, summary, time_period):
         summary['recency'],
         summary['T']
     )
-
+#data visualisation
 def plot_frequency_recency_heatmap(bgf, summary):
     max_frequency = min(int(summary['frequency'].max()), 50)
     max_recency = min(int(summary['T'].max()), 50)
@@ -95,13 +97,13 @@ def plot_validation(bgf, summary):
     plot_period_transactions(bgf, ax=ax)
     st.pyplot(fig)
     st.write("This plot shows how well the model fits the data, comparing actual vs. predicted transactions.")
-
+#saves the trained model weights
 def save_model_params(bgf):
     return {
         'params': bgf.params_.to_dict(),
         'penalizer_coef': bgf.penalizer_coef
     }
-
+#adjust the coeficient that suits the dataset
 def load_model_params(params_dict):
     bgf = BetaGeoFitter(penalizer_coef=params_dict['penalizer_coef'])
     bgf.params_ = pd.Series(params_dict['params'])
